@@ -36,10 +36,23 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Plates\Affectors\Interfaces\IPlateAffector.cs" />
+     <Compile Include="Assets\Scripts\Debuffs\DebuffData.cs" />
+     <Compile Include="Assets\Scripts\Plates\SO\PlateData.cs" />
+     <Compile Include="Assets\Scripts\Extensions\PlateDataExtension.cs" />
      <Compile Include="Assets\Scripts\Utilities\MousePosition3D.cs" />
+     <Compile Include="Assets\Scripts\Plates\Affectors\DamageDebuffAffector.cs" />
      <Compile Include="Assets\Scripts\Utilities\Grid\GridSystem.cs" />
+     <Compile Include="Assets\Scripts\Plates\Behaviours\DamageDebuffPlateBehaviour.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
+     <Compile Include="Assets\Scripts\Plates\Behaviours\PlateBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Enemies\EnemyBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Debuffs\DebuffType.cs" />
+     <Compile Include="Assets\Scripts\Enemies\Interfaces\IEnemy.cs" />
      <Compile Include="Assets\Scripts\Utilities\Grid\GridCell.cs" />
+     <Compile Include="Assets\Scripts\Plates\Entities\DamageDebuffData.cs" />
+     <Compile Include="Assets\Scripts\Plates\Affectors\DebuffAffector.cs" />
+     <Compile Include="Assets\Scripts\Plates\Affectors\DamageAffector.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.10f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
