@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Fire Tower 1
   Damage: 10
-  ReloadSpeed: 1
+  ReloadSpeed: 2
   Debuff: {fileID: 11400000, guid: 14af09a09a0531a4ca9ea994698a97b5, type: 2}
   NextLevelPlate: {fileID: 0}
   PlatesToLevelUp: -1

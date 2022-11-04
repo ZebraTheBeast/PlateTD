@@ -53,6 +53,9 @@
      <Compile Include="Assets\Scripts\Plates\Entities\DamageDebuffData.cs" />
      <Compile Include="Assets\Scripts\Plates\Affectors\DebuffAffector.cs" />
      <Compile Include="Assets\Scripts\Plates\Affectors\DamageAffector.cs" />
+     <Compile Include="Assets\Scripts\Camera\CameraMovementArea.cs" />
+     <Compile Include="Assets\Scripts\Camera\CameraMovement.cs" />
+     <Compile Include="Assets\Scripts\Camera\CameraBehaviour.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.10f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

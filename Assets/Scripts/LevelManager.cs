@@ -25,7 +25,6 @@ namespace PlateTD
             if (Input.GetMouseButtonDown(0))
             {
                 _gridSystem.GetXY(Mouse3D.GetPosition(), out int x, out int y);
-                Debug.Log($"{x} - {y}");
                 var position = _gridSystem.GetCenteredWorldPosition(x, y);
                 if (!_gridSystem.IsOccupied(x, y))
                 {
