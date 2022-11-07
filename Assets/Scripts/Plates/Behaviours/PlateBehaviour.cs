@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using PlateTD.Enemies.Interfaces;
+using PlateTD.SO;
 using UnityEngine;
 
 namespace PlateTD.Plates

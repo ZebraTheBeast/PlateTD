@@ -1,37 +1,58 @@
+using System.Linq;
+using PlateTD.Building;
+using PlateTD.Inventory;
+using PlateTD.Plates;
+using PlateTD.Shop;
+using PlateTD.SO;
 using UnityEngine;
-using PlateTD.Utilities.Grid;
-using PlateTD.Utilities;
 
-namespace PlateTD
+public class LevelManager : MonoBehaviour
 {
-    public class LevelManager : MonoBehaviour
+    [SerializeField] private PlateTypePlateDataConfig _plateConfig;
+    [SerializeField] private InventoryService _inventoryService;
+    [SerializeField] private BuildingService _buildingService;
+    [SerializeField] private ShopService _shopService;
+
+    [SerializeField] private ShopConfig _shopConfig;
+
+    private void EndDragHandler(Vector2 screenPosition, PlateType plateType)
     {
-        [SerializeField] private GameObject _platePrefab;
-        [SerializeField] private Transform _startPosition;
-
-        [SerializeField] private int _columnCount;
-        [SerializeField] private int _rowCount;
-        [SerializeField] private float _cellSize;
-
-        private GridSystem<int> _gridSystem;
-
-        private void Awake()
+        if (_buildingService.IsPlateExist(screenPosition))
         {
-            _gridSystem = new GridSystem<int>(_columnCount, _rowCount, _cellSize, _startPosition.position);
-        }
-
-        private void Update()
-        {
-            if (Input.GetMouseButtonDown(0))
+            if (_buildingService.IsPlateOfType(screenPosition, plateType))
             {
-                _gridSystem.GetXY(Mouse3D.GetPosition(), out int x, out int y);
-                var position = _gridSystem.GetCenteredWorldPosition(x, y);
-                if (!_gridSystem.IsOccupied(x, y))
-                {
-                    Instantiate(_platePrefab, position, Quaternion.identity);
-                    _gridSystem.SetValue(x, y, 1);
-                }
+                // upgrade plate
             }
         }
+        else
+        {
+            var platePrefab = _plateConfig.PlateTypePlateDatas.FirstOrDefault(item => item.Type == plateType).Data.Prefab;
+            bool result = _buildingService.BuildPlate(screenPosition, plateType, platePrefab);
+            
+            if (result)
+            {
+                _inventoryService.ReducePlate(plateType);
+            }
+        }
+    }
+
+    private void PlateBuyHandler(PlateType plateType)
+    {
+        _inventoryService.AddPlate(plateType);
+    }
+
+    private void Start()
+    {
+        _inventoryService.Init(_plateConfig);
+        _inventoryService.OnEndDragPanel += EndDragHandler;
+
+        _shopService.Init(_shopConfig);
+        _shopService.OnPlateBuy += PlateBuyHandler;
+    }
+
+    private void OnDestroy()
+    {
+        _inventoryService.OnEndDragPanel -= EndDragHandler;
+        _shopService.OnPlateBuy -= PlateBuyHandler;
     }
 }

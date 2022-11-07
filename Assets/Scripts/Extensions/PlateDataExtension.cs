@@ -1,13 +1,17 @@
-using UnityEngine;
+using PlateTD.Entities;
+using PlateTD.SO;
 
-public static class PlateDataExtension
+namespace PlateTD.Extensions
 {
-    public static DamageDebuffData ToDamageDebuffData(this PlateData plateData)
+    public static class PlateDataExtension
     {
-        return new DamageDebuffData
+        public static DamageDebuffData ToDamageDebuffData(this PlateData plateData)
         {
-            Damage = plateData.Damage,
-            Debuff = plateData.Debuff
-        };
+            return new DamageDebuffData
+            {
+                Damage = plateData.Damage,
+                Debuff = plateData.Debuff
+            };
+        }
     }
 }

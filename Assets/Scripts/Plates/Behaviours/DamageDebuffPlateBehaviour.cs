@@ -1,12 +1,15 @@
-using PlateTD.Plates;
-using UnityEngine;
+using PlateTD.Extensions;
+using PlateTD.Plates.Affectors;
 
-public class DamageDebuffPlateBehaviour : PlateBehaviour
+namespace PlateTD.Plates.Behaviours
 {
-    protected override void Awake()
+    public class DamageDebuffPlateBehaviour : PlateBehaviour
     {
-        base.Awake();
-        _plateAffector = new DamageDebuffAffector();
-        _plateAffector.SetData(_plateData.ToDamageDebuffData());
+        protected override void Awake()
+        {
+            base.Awake();
+            _plateAffector = new DamageDebuffAffector();
+            _plateAffector.SetData(_plateData.ToDamageDebuffData());
+        }
     }
 }

@@ -4,24 +4,19 @@ namespace PlateTD.Utilities
 {
     public static class Mouse3D
     {
-        public static Vector3 GetPosition()
+        public static bool TryGetPosition(Vector3 position, int layerMask, out Vector3 hitPoint)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                return hit.point;
-            }
-            return Vector3.zero;
-        }
-
-        public static Vector3 GetPosition(int layerMask)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(position);
+            
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
             {
-                return hit.point;
+                hitPoint = hit.point;
+                return true;
             }
-            return Vector3.zero;
+
+            hitPoint = Vector3.zero;
+
+            return false;
         }
     }
 }
