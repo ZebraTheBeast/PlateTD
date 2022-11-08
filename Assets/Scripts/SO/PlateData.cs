@@ -1,4 +1,5 @@
 using PlateTD.Debuffs;
+using PlateTD.Plates;
 using UnityEngine;
 
 namespace PlateTD.SO
@@ -12,7 +13,8 @@ namespace PlateTD.SO
         public DebuffData Debuff;
         public PlateData NextLevelPlate;
         public int PlatesToLevelUp;
-        public GameObject Prefab;
+        public PlateBehaviour Prefab;
         public Sprite Sprite;
+        public GameObject PlateRenderer;
     }
 }

@@ -6,13 +6,13 @@ namespace PlateTD.Entities
 {
     public class PlacedPlateData
     {
-        public PlacedPlateData(PlateType plateType, GameObject gameObject)
+        public PlacedPlateData(PlateType plateType, PlateBehaviour plateBehaviour)
         {
             Type = plateType;
-            GameObject = gameObject;
+            PlateBehaviour = plateBehaviour;
         }
 
         public PlateType Type { get; set; }
-        public GameObject GameObject { get; set; }
+        public PlateBehaviour PlateBehaviour { get; set; }
     }
 }

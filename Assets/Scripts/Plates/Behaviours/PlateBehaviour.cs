@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using PlateTD.Enemies.Interfaces;
 using PlateTD.SO;
 using UnityEngine;
 
@@ -8,14 +6,41 @@ namespace PlateTD.Plates
     public class PlateBehaviour : MonoBehaviour
     {
         [SerializeField] protected PlateData _plateData;
+        [SerializeField] protected GameObject _plateRenderer;
+        [SerializeField] protected DamageZone _damageZone;
+
         protected IPlateAffector _plateAffector;
-        private List<IEnemy> _enemies;
 
         private float _timer;
+        private int _consumedPlates;
+
+        public bool TryUpgradePlate()
+        {
+            if(_plateData.NextLevelPlate != null)
+            {
+                _consumedPlates++;
+
+                if(_consumedPlates >= _plateData.PlatesToLevelUp)
+                {
+                    _consumedPlates = 0;
+                    _plateData = _plateData.NextLevelPlate;
+                    UpdatePlateRenderer();
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void UpdatePlateRenderer()
+        {
+            Destroy(_plateRenderer);
+            _plateRenderer = Instantiate(_plateData.PlateRenderer, gameObject.transform);
+        }
 
         protected virtual void Awake()
         {
-            _enemies = new List<IEnemy>();
             _timer = _plateData.ReloadSpeed;
         }
 
@@ -25,9 +50,9 @@ namespace PlateTD.Plates
             {
                 _timer -= Time.deltaTime;
             }
-            else if (_enemies.Count > 0)
+            else if (_damageZone.IsEnemyExist)
             {
-                foreach (var enemy in _enemies)
+                foreach (var enemy in _damageZone.Enemies)
                 {
                     _plateAffector.AffectEnemy(enemy);
                 }
@@ -35,20 +60,6 @@ namespace PlateTD.Plates
             }
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.TryGetComponent<IEnemy>(out IEnemy enemy))
-            {
-                _enemies.Add(enemy);
-            }
-        }
 
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.TryGetComponent<IEnemy>(out IEnemy enemy))
-            {
-                _enemies.Remove(enemy);
-            }
-        }
     }
 }

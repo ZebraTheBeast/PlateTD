@@ -33,23 +33,24 @@ namespace PlateTD.Building
             return false;
         }
 
-        public bool IsPlateOfType(Vector2 screenPosition, PlateType plateType)
+        public bool TryUpgradePlate(Vector2 screenPosition, PlateType plateType)
         {
             if (Mouse3D.TryGetPosition(screenPosition, _fieldLayerMask, out Vector3 position))
             {
                 _gridSystem.GetXY(position, out int x, out int y);
                 PlacedPlateData placedPlateData = _gridSystem.GetValue(x, y);
 
-                if (placedPlateData != null)
+                if (placedPlateData != null && 
+                    placedPlateData.Type == plateType)
                 {
-                    return placedPlateData.Type == plateType;
+                    return placedPlateData.PlateBehaviour.TryUpgradePlate();
                 }
             }
 
             return false;
         }
 
-        public bool BuildPlate(Vector2 screenPosition, PlateType plateType, GameObject platePrefab)
+        public bool BuildPlate(Vector2 screenPosition, PlateType plateType, PlateBehaviour platePrefab)
         {
             if (Mouse3D.TryGetPosition(screenPosition, _fieldLayerMask, out Vector3 position))
             {
@@ -58,8 +59,9 @@ namespace PlateTD.Building
 
                 if (placedPlateData == null)
                 {
-                    var gameObject = Instantiate(platePrefab, _gridSystem.GetCenteredWorldPosition(x, y), Quaternion.identity);
-                    var value = new PlacedPlateData(plateType, gameObject);
+                    var plateBehaviour = Instantiate(platePrefab, _gridSystem.GetCenteredWorldPosition(x, y), Quaternion.identity);
+                    plateBehaviour.UpdatePlateRenderer();
+                    var value = new PlacedPlateData(plateType, plateBehaviour);
                     _gridSystem.SetValue(x, y, value);
                     return true;
                 }

@@ -37,11 +37,13 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Plates\Affectors\Interfaces\IPlateAffector.cs" />
+     <Compile Include="Assets\Scripts\Shop\ShopService.cs" />
      <Compile Include="Assets\Scripts\Debuffs\DebuffData.cs" />
      <Compile Include="Assets\Scripts\Building\BuildingService.cs" />
      <Compile Include="Assets\Scripts\SO\PlateData.cs" />
      <Compile Include="Assets\Scripts\SO\PlateTypePlateDataConfig.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
+     <Compile Include="Assets\Scripts\Entities\PlateInvetoryData.cs" />
      <Compile Include="Assets\Scripts\Extensions\PlateDataExtension.cs" />
      <Compile Include="Assets\Scripts\Utilities\MousePosition3D.cs" />
      <Compile Include="Assets\Scripts\Plates\PlateType.cs" />
@@ -58,16 +60,15 @@
      <Compile Include="Assets\Scripts\Enemies\Interfaces\IEnemy.cs" />
      <Compile Include="Assets\Scripts\Entities\PlateTypePlateData.cs" />
      <Compile Include="Assets\Scripts\Inventory\InventoryPlatePanel.cs" />
+     <Compile Include="Assets\Scripts\SO\ShopConfig.cs" />
      <Compile Include="Assets\Scripts\Utilities\Grid\GridCell.cs" />
      <Compile Include="Assets\Scripts\Inventory\InventoryService.cs" />
      <Compile Include="Assets\Scripts\Entities\DamageDebuffData.cs" />
      <Compile Include="Assets\Scripts\Plates\Affectors\DebuffAffector.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraMovement.cs" />
-     <Compile Include="Assets\Scripts\Plates\Affectors\DamageAffector.cs" />
      <Compile Include="Assets\Scripts\Shop\ShopPanel.cs" />
-     <Compile Include="Assets\Scripts\Shop\ShopService.cs" />
-     <Compile Include="Assets\Scripts\SO\ShopConfig.cs" />
-     <Compile Include="Assets\Scripts\Entities\PlateInvetoryData.cs" />
+     <Compile Include="Assets\Scripts\Plates\Affectors\DamageAffector.cs" />
+     <Compile Include="Assets\Scripts\Plates\DamageZone.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

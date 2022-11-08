@@ -19,9 +19,9 @@ public class LevelManager : MonoBehaviour
     {
         if (_buildingService.IsPlateExist(screenPosition))
         {
-            if (_buildingService.IsPlateOfType(screenPosition, plateType))
+            if (_buildingService.TryUpgradePlate(screenPosition, plateType))
             {
-                // upgrade plate
+                _inventoryService.ReducePlate(plateType);
             }
         }
         else
