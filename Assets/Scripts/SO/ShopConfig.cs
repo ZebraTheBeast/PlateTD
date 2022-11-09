@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using PlateTD.Plates;
+using PlateTD.Entities.Enums;
 using UnityEngine;
 
 namespace PlateTD.SO

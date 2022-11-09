@@ -1,14 +1,15 @@
 using System.Linq;
 using PlateTD.Building;
+using PlateTD.Entities.Enums;
+using PlateTD.Extensions;
 using PlateTD.Inventory;
-using PlateTD.Plates;
 using PlateTD.Shop;
 using PlateTD.SO;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private PlateTypePlateDataConfig _plateConfig;
+    [SerializeField] private PlateDataConfig _plateDataConfig;
     [SerializeField] private InventoryService _inventoryService;
     [SerializeField] private BuildingService _buildingService;
     [SerializeField] private ShopService _shopService;
@@ -17,7 +18,7 @@ public class LevelManager : MonoBehaviour
 
     private void StartDragHandler(Vector2 screenPosition, PlateType plateType)
     {
-        var plateRenderer = _plateConfig.PlateTypePlateDatas.FirstOrDefault(item => item.Type == plateType).Data.PlateRenderer;
+        var plateRenderer = GetPlateSoByType(plateType).PlateRenderer;
 
         _buildingService.CreateGhost(plateRenderer, screenPosition);
     }
@@ -33,8 +34,8 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            var platePrefab = _plateConfig.PlateTypePlateDatas.FirstOrDefault(item => item.Type == plateType).Data.Prefab;
-            bool result = _buildingService.BuildPlate(screenPosition, plateType, platePrefab);
+            var plateSO = GetPlateSoByType(plateType);
+            bool result = _buildingService.BuildPlate(screenPosition, plateType, plateSO.ToPlateBuildingDTO());
 
             if (result)
             {
@@ -51,7 +52,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        _inventoryService.Init(_plateConfig);
+        _inventoryService.Init(_plateDataConfig.ToPlateInventoryDTO());
         _inventoryService.OnEndDragPanel += EndDragHandler;
         _inventoryService.OnStartDragPanel += StartDragHandler;
 
@@ -72,5 +73,10 @@ public class LevelManager : MonoBehaviour
         _inventoryService.OnEndDragPanel -= EndDragHandler;
         _inventoryService.OnStartDragPanel -= StartDragHandler;
         _shopService.OnPlateBuy -= PlateBuyHandler;
+    }
+
+    private PlateSO GetPlateSoByType(PlateType type)
+    {
+        return _plateDataConfig.PlateSOList.FirstOrDefault(item => item.PlateType == type);
     }
 }

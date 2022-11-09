@@ -1,3 +1,5 @@
+using PlateTD.Entities.DTO;
+using PlateTD.Extensions;
 using PlateTD.SO;
 using UnityEngine;
 
@@ -5,7 +7,7 @@ namespace PlateTD.Plates
 {
     public class PlateBehaviour : MonoBehaviour
     {
-        [SerializeField] protected PlateData _plateData;
+        [SerializeField] protected PlateDTO _plateData;
         [SerializeField] protected GameObject _plateRenderer;
         [SerializeField] protected DamageZone _damageZone;
 
@@ -29,7 +31,7 @@ namespace PlateTD.Plates
                 {
                     _consumedPlates = 0;
                     _plateData = _plateData.NextLevelPlate;
-                    UpdatePlateRenderer();
+                    UpdatePlate();
                 }
 
                 return true;
@@ -38,15 +40,21 @@ namespace PlateTD.Plates
             return false;
         }
 
-        public void UpdatePlateRenderer()
+        public void SetPlateData(PlateDTO data)
+        {
+            _plateData = data;
+        }
+
+        public void UpdatePlate()
         {
             Destroy(_plateRenderer);
             _plateRenderer = Instantiate(_plateData.PlateRenderer, gameObject.transform);
+            _plateAffector.SetData(_plateData.ToDamageDebuffData());
         }
 
         protected virtual void Awake()
         {
-            _timer = _plateData.ReloadSpeed;
+            _timer = 0;
         }
 
         private void Update()

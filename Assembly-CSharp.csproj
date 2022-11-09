@@ -38,16 +38,11 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Plates\Affectors\Interfaces\IPlateAffector.cs" />
      <Compile Include="Assets\Scripts\Shop\ShopService.cs" />
-     <Compile Include="Assets\Scripts\Debuffs\DebuffData.cs" />
      <Compile Include="Assets\Scripts\Building\BuildingService.cs" />
-     <Compile Include="Assets\Scripts\SO\PlateData.cs" />
-     <Compile Include="Assets\Scripts\SO\PlateTypePlateDataConfig.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\Entities\PlateInvetoryData.cs" />
-     <Compile Include="Assets\Scripts\Extensions\PlateDataExtension.cs" />
      <Compile Include="Assets\Scripts\Utilities\MousePosition3D.cs" />
      <Compile Include="Assets\Scripts\Building\BuildingGhostController.cs" />
-     <Compile Include="Assets\Scripts\Plates\PlateType.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraBehaviour.cs" />
      <Compile Include="Assets\Scripts\Plates\Affectors\DamageDebuffAffector.cs" />
      <Compile Include="Assets\Scripts\Utilities\Grid\GridSystem.cs" />
@@ -58,9 +53,7 @@
      <Compile Include="Assets\Scripts\Entities\PlacedPlateData.cs" />
      <Compile Include="Assets\Scripts\Plates\Behaviours\PlateBehaviour.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyBehaviour.cs" />
-     <Compile Include="Assets\Scripts\Debuffs\DebuffType.cs" />
      <Compile Include="Assets\Scripts\Enemies\Interfaces\IEnemy.cs" />
-     <Compile Include="Assets\Scripts\Entities\PlateTypePlateData.cs" />
      <Compile Include="Assets\Scripts\Inventory\InventoryPlatePanel.cs" />
      <Compile Include="Assets\Scripts\SO\ShopConfig.cs" />
      <Compile Include="Assets\Scripts\Utilities\Grid\GridCell.cs" />
@@ -70,6 +63,17 @@
      <Compile Include="Assets\Scripts\Camera\CameraMovement.cs" />
      <Compile Include="Assets\Scripts\Shop\ShopPanel.cs" />
      <Compile Include="Assets\Scripts\Plates\Affectors\DamageAffector.cs" />
+     <Compile Include="Assets\Scripts\Entities\Enums\DebuffType.cs" />
+     <Compile Include="Assets\Scripts\Entities\DTO\DebuffDTO.cs" />
+     <Compile Include="Assets\Scripts\SO\DebuffSO.cs" />
+     <Compile Include="Assets\Scripts\SO\EnemySO.cs" />
+     <Compile Include="Assets\Scripts\SO\PlateSO.cs" />
+     <Compile Include="Assets\Scripts\Entities\Enums\PlateType.cs" />
+     <Compile Include="Assets\Scripts\Entities\DTO\PlateDTO.cs" />
+     <Compile Include="Assets\Scripts\Entities\DTO\PlateInventoryDTO.cs" />
+     <Compile Include="Assets\Scripts\Entities\DTO\PlateBuildingDTO.cs" />
+     <Compile Include="Assets\Scripts\SO\PlateDataConfig.cs" />
+     <Compile Include="Assets\Scripts\Extensions\Mapper.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

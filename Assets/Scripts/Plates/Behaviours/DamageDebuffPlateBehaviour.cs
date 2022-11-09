@@ -7,9 +7,9 @@ namespace PlateTD.Plates.Behaviours
     {
         protected override void Awake()
         {
+            
             base.Awake();
             _plateAffector = new DamageDebuffAffector();
-            _plateAffector.SetData(_plateData.ToDamageDebuffData());
         }
     }
 }

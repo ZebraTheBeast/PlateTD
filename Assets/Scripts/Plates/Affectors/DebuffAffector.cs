@@ -1,9 +1,9 @@
-using PlateTD.Debuffs;
 using PlateTD.Enemies.Interfaces;
+using PlateTD.SO;
 
 public class DebuffAffector : IPlateAffector
 {
-    private DebuffData _debuff;
+    private DebuffSO _debuff;
 
     public void AffectEnemy(IEnemy enemy)
     {
@@ -12,6 +12,6 @@ public class DebuffAffector : IPlateAffector
 
     public void SetData(object data)
     {
-        _debuff = data as DebuffData;
+        _debuff = data as DebuffSO;
     }
 }

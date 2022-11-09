@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using PlateTD.Entities;
-using PlateTD.Plates;
+using PlateTD.Entities.DTO;
+using PlateTD.Entities.Enums;
 using PlateTD.SO;
 using UnityEngine;
 
@@ -21,17 +22,17 @@ namespace PlateTD.Inventory
         public bool IsDragged { get; private set; }
         public Vector2 DragPosition { get; private set; }
 
-        public void Init(PlateTypePlateDataConfig intentoryPlateData)
+        public void Init(List<PlateInventoryDTO> plateInventoryDatas)
         {
             IsDragged = false;
             _inventory = new Dictionary<PlateType, PlateInventoryData>();
 
-            foreach (var plateData in intentoryPlateData.PlateTypePlateDatas)
+            foreach (var plateData in plateInventoryDatas)
             {
                 var platePanel = Instantiate(_platePanelPrefab, _inventoryListTransform);
                 platePanel.SetPlatePanel(
                     0,
-                    plateData.Data.Sprite,
+                    plateData.Sprite,
                     (point) => BeginDragHandler(point, plateData.Type),
                     (point) => EndDragHandler(point),
                     (point) => DragHandler(point));

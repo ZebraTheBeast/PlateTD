@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using PlateTD.Plates;
+using PlateTD.Entities.Enums;
 using PlateTD.SO;
 using UnityEngine;
 using Random = UnityEngine.Random;

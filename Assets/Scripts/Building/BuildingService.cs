@@ -1,9 +1,9 @@
 using UnityEngine;
 using PlateTD.Utilities.Grid;
-using PlateTD.SO;
 using PlateTD.Entities;
-using PlateTD.Plates;
 using PlateTD.Utilities;
+using PlateTD.Entities.Enums;
+using PlateTD.Entities.DTO;
 
 namespace PlateTD.Building
 {
@@ -58,7 +58,7 @@ namespace PlateTD.Building
             return false;
         }
 
-        public bool BuildPlate(Vector2 screenPosition, PlateType plateType, PlateBehaviour platePrefab)
+        public bool BuildPlate(Vector2 screenPosition, PlateType plateType, PlateBuildingDTO plateBuildingData)
         {
             if (Mouse3D.TryGetPosition(screenPosition, _fieldLayerMask, out Vector3 position))
             {
@@ -67,8 +67,9 @@ namespace PlateTD.Building
 
                 if (placedPlateData == null)
                 {
-                    var plateBehaviour = Instantiate(platePrefab, _gridSystem.GetCenteredWorldPosition(x, y), Quaternion.identity);
-                    plateBehaviour.UpdatePlateRenderer();
+                    var plateBehaviour = Instantiate(plateBuildingData.Prefab, _gridSystem.GetCenteredWorldPosition(x, y), Quaternion.identity);
+                    plateBehaviour.SetPlateData(plateBuildingData.PlateData);
+                    plateBehaviour.UpdatePlate();
                     var value = new PlacedPlateData(plateType, plateBehaviour);
                     _gridSystem.SetValue(x, y, value);
                     return true;

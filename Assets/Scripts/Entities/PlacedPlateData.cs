@@ -1,6 +1,5 @@
+using PlateTD.Entities.Enums;
 using PlateTD.Plates;
-using PlateTD.SO;
-using UnityEngine;
 
 namespace PlateTD.Entities
 {
