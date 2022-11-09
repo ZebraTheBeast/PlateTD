@@ -14,13 +14,18 @@ namespace PlateTD.Plates
         private float _timer;
         private int _consumedPlates;
 
+        public bool IsUpgradable()
+        {
+            return _plateData.NextLevelPlate != null;
+        }
+
         public bool TryUpgradePlate()
         {
-            if(_plateData.NextLevelPlate != null)
+            if (_plateData.NextLevelPlate != null)
             {
                 _consumedPlates++;
 
-                if(_consumedPlates >= _plateData.PlatesToLevelUp)
+                if (_consumedPlates >= _plateData.PlatesToLevelUp)
                 {
                     _consumedPlates = 0;
                     _plateData = _plateData.NextLevelPlate;

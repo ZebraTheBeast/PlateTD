@@ -1569,9 +1569,13 @@ MonoBehaviour:
   _fieldLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  _ghostMaterialSuccess: {fileID: 2100000, guid: c7362b1d841ee064bb5f7fdc1cfe1e67, type: 2}
+  _ghostMaterialFail: {fileID: 2100000, guid: 7316353348ca04542b331e4d0d46de25, type: 2}
   _columnCount: 5
   _rowCount: 10
   _cellSize: 1
+  _ghostOffsetCamera: 5
+  _ghostOffsetPlate: {x: 0, y: 0, z: -0.5}
   _plateBuidlingController: {fileID: 838599338}
 --- !u!1 &1883005407
 GameObject:

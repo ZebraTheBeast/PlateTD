@@ -12,11 +12,19 @@ namespace PlateTD.Building
         [SerializeField] private Transform _fieldTransform;
         [SerializeField] private LayerMask _fieldLayerMask;
 
+        [SerializeField] private Material _ghostMaterialSuccess;
+        [SerializeField] private Material _ghostMaterialFail;
+
         [SerializeField] private int _columnCount;
         [SerializeField] private int _rowCount;
         [SerializeField] private float _cellSize;
 
+        [SerializeField] private float _ghostOffsetCamera = 5f;
+        [SerializeField] private Vector3 _ghostOffsetPlate = new Vector3(0, 0, -0.5f);
+
+
         [SerializeField] private BuildingController _plateBuidlingController;
+        private BuildingGhostController _buildingGhostController;
 
         private GridSystem<PlacedPlateData> _gridSystem;
 
@@ -40,7 +48,7 @@ namespace PlateTD.Building
                 _gridSystem.GetXY(position, out int x, out int y);
                 PlacedPlateData placedPlateData = _gridSystem.GetValue(x, y);
 
-                if (placedPlateData != null && 
+                if (placedPlateData != null &&
                     placedPlateData.Type == plateType)
                 {
                     return placedPlateData.PlateBehaviour.TryUpgradePlate();
@@ -70,6 +78,39 @@ namespace PlateTD.Building
             return false;
         }
 
+        public void CreateGhost(GameObject plateAppearance, Vector2 screenPosition)
+        {
+            _buildingGhostController.CreateGhost(plateAppearance, screenPosition);
+        }
+
+        public void UpdateGhost(Vector2 screenPosition)
+        {
+            if (_buildingGhostController.IsActive)
+            {
+                Vector3 ghostPosition = Camera.main.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, _ghostOffsetCamera));
+                var ghostCanBePlased = false;
+
+                if (Mouse3D.TryGetPosition(screenPosition, _fieldLayerMask, out Vector3 position))
+                {
+                    _gridSystem.GetXY(position, out int x, out int y);
+                    PlacedPlateData placedPlateData = _gridSystem.GetValue(x, y);
+                    ghostPosition = _gridSystem.GetCenteredWorldPosition(x, y) + _ghostOffsetPlate;
+
+                    if(placedPlateData == null || placedPlateData.PlateBehaviour.IsUpgradable())
+                    {
+                        ghostCanBePlased = true;
+                    }
+                }
+
+                _buildingGhostController.Update(ghostPosition, ghostCanBePlased);
+            }
+        }
+
+        public void DestroyGhost()
+        {
+            _buildingGhostController.DestroyGhost();
+        }
+
         private void FieldClickHandler(Vector3 clickPoint)
         {
             _gridSystem.GetXY(clickPoint, out int x, out int y);
@@ -85,19 +126,13 @@ namespace PlateTD.Building
         private void Awake()
         {
             _gridSystem = new GridSystem<PlacedPlateData>(_columnCount, _rowCount, _cellSize, _fieldTransform.position);
+            _buildingGhostController = new BuildingGhostController(_ghostMaterialSuccess, _ghostMaterialFail);
         }
 
         private void Start()
         {
             _plateBuidlingController.SetFieldLayerMask(_fieldLayerMask);
             _plateBuidlingController.OnFieldClick += FieldClickHandler;
-
-
-        }
-
-        private void Update()
-        {
-
         }
 
         private void OnDestroy()

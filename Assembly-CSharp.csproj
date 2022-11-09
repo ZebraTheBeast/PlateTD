@@ -46,6 +46,7 @@
      <Compile Include="Assets\Scripts\Entities\PlateInvetoryData.cs" />
      <Compile Include="Assets\Scripts\Extensions\PlateDataExtension.cs" />
      <Compile Include="Assets\Scripts\Utilities\MousePosition3D.cs" />
+     <Compile Include="Assets\Scripts\Building\BuildingGhostController.cs" />
      <Compile Include="Assets\Scripts\Plates\PlateType.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraBehaviour.cs" />
      <Compile Include="Assets\Scripts\Plates\Affectors\DamageDebuffAffector.cs" />
@@ -53,6 +54,7 @@
      <Compile Include="Assets\Scripts\Camera\CameraMovementArea.cs" />
      <Compile Include="Assets\Scripts\Building\BuildingController.cs" />
      <Compile Include="Assets\Scripts\Plates\Behaviours\DamageDebuffPlateBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Plates\DamageZone.cs" />
      <Compile Include="Assets\Scripts\Entities\PlacedPlateData.cs" />
      <Compile Include="Assets\Scripts\Plates\Behaviours\PlateBehaviour.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyBehaviour.cs" />
@@ -68,7 +70,6 @@
      <Compile Include="Assets\Scripts\Camera\CameraMovement.cs" />
      <Compile Include="Assets\Scripts\Shop\ShopPanel.cs" />
      <Compile Include="Assets\Scripts\Plates\Affectors\DamageAffector.cs" />
-     <Compile Include="Assets\Scripts\Plates\DamageZone.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
