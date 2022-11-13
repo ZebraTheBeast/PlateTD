@@ -63,7 +63,7 @@ namespace PlateTD.Plates
             {
                 _timer -= Time.deltaTime;
             }
-            else if (_damageZone.IsEnemyExist)
+            else if (_damageZone.IsEnemyExist())
             {
                 foreach (var enemy in _damageZone.Enemies)
                 {

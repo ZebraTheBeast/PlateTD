@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PlateTD.Entities;
 using PlateTD.Entities.DTO;
 using PlateTD.SO;
@@ -16,17 +17,19 @@ namespace PlateTD.Extensions
             };
         }
 
-        public static List<PlateInventoryDTO> ToPlateInventoryDTO(this PlateDataConfig plateDataConfig)
+        public static List<PlateInventoryViewDTO> ToPlateInventoryViewDTO(this PlateDataConfig plateDataConfig, InventoryConfig inventoryConfig)
         {
-            var plateInventoryDTOs = new List<PlateInventoryDTO>();
+            var plateInventoryDTOs = new List<PlateInventoryViewDTO>();
 
             foreach (var plateSO in plateDataConfig.PlateSOList)
             {
+                var amount = inventoryConfig.StartPlates.FirstOrDefault(plate => plate.Type == plateSO.PlateType).Amount;
                 plateInventoryDTOs.Add(
-                    new PlateInventoryDTO
+                    new PlateInventoryViewDTO
                     {
                         Type = plateSO.PlateType,
-                        Sprite = plateSO.Sprite
+                        Sprite = plateSO.Sprite,
+                        Amount = amount
                     }
                 );
             }
@@ -53,6 +56,14 @@ namespace PlateTD.Extensions
                 NextLevelPlate = plateSO.NextLevelPlate?.ToPlateDTO(),
                 PlatesToLevelUp = plateSO.PlatesToLevelUp,
                 PlateRenderer = plateSO.PlateRenderer,
+            };
+        }
+
+        public static EnemyDTO ToEnemyDTO(this EnemySO enemySO)
+        {
+            return new EnemyDTO
+            {
+                
             };
         }
     }

@@ -1,96 +1,53 @@
 using System;
 using System.Collections.Generic;
-using PlateTD.Entities;
-using PlateTD.Entities.DTO;
 using PlateTD.Entities.Enums;
 using PlateTD.SO;
-using UnityEngine;
 
-namespace PlateTD.Inventory
+public class InventoryService
 {
-    public class InventoryService : MonoBehaviour
+    private Dictionary<PlateType, int> _inventory;
+
+    public event Action<PlateType, int> OnPlateTypeAmountChanged;
+
+    public InventoryService(InventoryConfig inventoryConfig)
     {
-        [SerializeField] private Transform _inventoryListTransform;
-        [SerializeField] private InventoryPlatePanel _platePanelPrefab;
+        _inventory = new Dictionary<PlateType, int>();
 
-        private Dictionary<PlateType, PlateInventoryData> _inventory;
-        private PlateType _selectedPlateType;
-
-        public event Action<Vector2, PlateType> OnStartDragPanel;
-        public event Action<Vector2, PlateType> OnEndDragPanel;
-
-        public bool IsDragged { get; private set; }
-        public Vector2 DragPosition { get; private set; }
-
-        public void Init(List<PlateInventoryDTO> plateInventoryDatas)
+        foreach (var plateData in inventoryConfig.StartPlates)
         {
-            IsDragged = false;
-            _inventory = new Dictionary<PlateType, PlateInventoryData>();
+            _inventory.Add(plateData.Type, plateData.Amount);
+        }
+    }
 
-            foreach (var plateData in plateInventoryDatas)
-            {
-                var platePanel = Instantiate(_platePanelPrefab, _inventoryListTransform);
-                platePanel.SetPlatePanel(
-                    0,
-                    plateData.Sprite,
-                    (point) => BeginDragHandler(point, plateData.Type),
-                    (point) => EndDragHandler(point),
-                    (point) => DragHandler(point));
+    public int GetPlateAmount(PlateType plateType)
+    {
+        return _inventory.ContainsKey(plateType) ? _inventory[plateType] : 0;
+    }
 
-                _inventory.Add(plateData.Type, new PlateInventoryData(platePanel));
-            }
+    public void AddPlate(PlateType plateType)
+    {
+        if (_inventory.ContainsKey(plateType))
+        {
+            _inventory[plateType]++;
+        }
+        else
+        {
+            _inventory.Add(plateType, 1);
         }
 
-        public void AddPlate(PlateType plateType)
-        {
-            var panel = _inventory[plateType];
+        OnPlateTypeAmountChanged?.Invoke(plateType, _inventory[plateType]);
+    }
 
-            if (panel != null)
-            {
-                panel.Amount++;
-                panel.InventoryPlatePanel.SetAmount(panel.Amount);
-            }
+    public void ReducePlate(PlateType plateType)
+    {
+        if (_inventory.ContainsKey(plateType))
+        {
+            _inventory[plateType]--;
+            OnPlateTypeAmountChanged?.Invoke(plateType, _inventory[plateType]);
         }
-
-        public void ReducePlate(PlateType plateType)
+        else
         {
-            var panel = _inventory[plateType];
-
-            if (panel != null && panel.Amount > 0)
-            {
-                panel.Amount--;
-                panel.InventoryPlatePanel.SetAmount(panel.Amount);
-            }
-        }
-
-        private void BeginDragHandler(Vector2 beginDragPoint, PlateType plateType)
-        {
-            if (_inventory[plateType] != null && _inventory[plateType].Amount > 0)
-            {
-                _selectedPlateType = plateType;
-                OnStartDragPanel?.Invoke(beginDragPoint, plateType);
-                IsDragged = true;
-            }
-            else
-            {
-                _selectedPlateType = PlateType.None;
-            }
-        }
-
-        private void EndDragHandler(Vector2 endDragPoint)
-        {
-            if (_selectedPlateType != PlateType.None)
-            {
-                OnEndDragPanel?.Invoke(endDragPoint, _selectedPlateType);
-            }
-
-            _selectedPlateType = PlateType.None;
-            IsDragged = false;
-        }
-
-        private void DragHandler(Vector2 position)
-        {
-            DragPosition = position;
+            throw new Exception($"[{this.GetType().Name}][ReducePlate] Can not find plate with type: {plateType}");
         }
     }
 }

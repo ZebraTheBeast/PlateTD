@@ -1,5 +1,3 @@
-using PlateTD.Entities.Enums;
-
 namespace PlateTD.Entities.DTO
 {
     public class DebuffDTO

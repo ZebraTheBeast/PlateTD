@@ -1,5 +1,7 @@
 using System.Linq;
 using PlateTD.Building;
+using PlateTD.EnemyRepository;
+using PlateTD.EnemyRepository.Interfaces;
 using PlateTD.Entities.Enums;
 using PlateTD.Extensions;
 using PlateTD.Inventory;
@@ -9,12 +11,18 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private PlateDataConfig _plateDataConfig;
-    [SerializeField] private InventoryService _inventoryService;
+    [SerializeField] private WaveService _waveService;
+    [SerializeField] private DragAndDropInventoryService _dragAndDropInventoryService;
     [SerializeField] private BuildingService _buildingService;
-    [SerializeField] private ShopService _shopService;
+
+    private ShopService _shopService;
+    private InventoryService _inventoryService;
 
     [SerializeField] private ShopConfig _shopConfig;
+    [SerializeField] private InventoryConfig _inventoryConfig;
+    [SerializeField] private WaveConfig _waveConfig;
+    [SerializeField] private PlateDataConfig _plateDataConfig;
+    [SerializeField] private EnemyConfig _enemyConfig;
 
     private void StartDragHandler(Vector2 screenPosition, PlateType plateType)
     {
@@ -50,33 +58,78 @@ public class LevelManager : MonoBehaviour
         _inventoryService.AddPlate(plateType);
     }
 
-    private void Start()
+    private void AddGoldHandler(int goldAmount)
     {
-        _inventoryService.Init(_plateDataConfig.ToPlateInventoryDTO());
-        _inventoryService.OnEndDragPanel += EndDragHandler;
-        _inventoryService.OnStartDragPanel += StartDragHandler;
-
-        _shopService.Init(_shopConfig);
-        _shopService.OnPlateBuy += PlateBuyHandler;
+        _shopService.AddGold(goldAmount);
     }
 
-    private void Update()
+    private void PrepareShopService()
     {
-        if(_inventoryService.IsDragged)
-        {
-            _buildingService.UpdateGhost(_inventoryService.DragPosition);
-        }
+        _shopService = new ShopService(_shopConfig);
+        ServiceLocator.RegisterService<ShopService>(_shopService);
     }
 
-    private void OnDestroy()
+    private void PrepareInventoryService()
     {
-        _inventoryService.OnEndDragPanel -= EndDragHandler;
-        _inventoryService.OnStartDragPanel -= StartDragHandler;
-        _shopService.OnPlateBuy -= PlateBuyHandler;
+        _inventoryService = new InventoryService(_inventoryConfig);
+        ServiceLocator.RegisterService<InventoryService>(_inventoryService);
+    }
+
+    private void PrepareWaveService()
+    {
+        IEnemyRepository enemyRepository = new EnemyRepository(_enemyConfig.EnemySOList);
+        _waveService.Init(_waveConfig, enemyRepository);
     }
 
     private PlateSO GetPlateSoByType(PlateType type)
     {
         return _plateDataConfig.PlateSOList.FirstOrDefault(item => item.PlateType == type);
+    }
+
+    private void StartWaveHandler()
+    {
+        _waveService.TrySetNextWave();
+        _waveService.StartWave();
+    }
+
+    private void Awake()
+    {
+        PrepareShopService();
+        PrepareInventoryService();
+        PrepareWaveService();
+    }
+
+    private void Start()
+    {
+        _dragAndDropInventoryService.Init(_plateDataConfig.ToPlateInventoryViewDTO(_inventoryConfig));
+        _dragAndDropInventoryService.OnEndDragPanel += EndDragHandler;
+        _dragAndDropInventoryService.OnStartDragPanel += StartDragHandler;
+
+        _shopService.OnPlateBuy += PlateBuyHandler;
+
+        GameEvents.OnAddGold += AddGoldHandler;
+        GameEvents.OnStartWave += StartWaveHandler;
+    }
+
+    private void Update()
+    {
+        if (_dragAndDropInventoryService.IsDragged)
+        {
+            _buildingService.UpdateGhost(_dragAndDropInventoryService.DragPosition);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _dragAndDropInventoryService.OnEndDragPanel -= EndDragHandler;
+        _dragAndDropInventoryService.OnStartDragPanel -= StartDragHandler;
+
+        _shopService.OnPlateBuy -= PlateBuyHandler;
+
+        ServiceLocator.RemoveService<ShopService>();
+        ServiceLocator.RemoveService<InventoryService>();
+
+        GameEvents.OnAddGold -= AddGoldHandler;
+        GameEvents.OnStartWave -= StartWaveHandler;
     }
 }
