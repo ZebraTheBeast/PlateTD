@@ -6,6 +6,7 @@ namespace PlateTD.Enemies
     public class EnemyWalkingService
     {
         private const string AnimatorWalkingParameter = "IsWalking";
+        private const string AnimatorSpeedParameter = "Speed";
 
         private Queue<Transform> _path;
         private Vector3 _destinationPoint;
@@ -16,7 +17,6 @@ namespace PlateTD.Enemies
         {
             _bodyTransform = bodyTransform;
             _animator = animator;
-            Debug.Log(_animator);
         }
 
         public void SetPath(GameObject pathParent)
@@ -31,7 +31,7 @@ namespace PlateTD.Enemies
             SetDestinationPointToNextPathPosition();
         }
 
-        public void GoByPath(float speed)
+        public void GoByPath(float speed, float slow)
         {
             if (Vector3.Distance(_bodyTransform.position, _destinationPoint) < 0.1)
             {
@@ -39,10 +39,11 @@ namespace PlateTD.Enemies
             }
             else if (_destinationPoint != null)
             {
-                _bodyTransform.position = Vector3.MoveTowards(_bodyTransform.position, _destinationPoint, speed);
+                _bodyTransform.position = Vector3.MoveTowards(_bodyTransform.position, _destinationPoint, speed * slow);
                 _bodyTransform.LookAt(_destinationPoint);
                 _animator.SetBool(AnimatorWalkingParameter, true);
             }
+            _animator.SetFloat(AnimatorSpeedParameter, slow);
         }
 
         private void SetDestinationPointToNextPathPosition()

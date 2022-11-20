@@ -10,6 +10,5 @@ namespace PlateTD.Entities.DTO
         public float HealthPoint;// { get; set; }
         public float MovementSpeed;// { get; set; }
         public int GoldAmount;
-        // public List<DebuffDTO> AppliedDebuffs { get; set; }
     }
 }

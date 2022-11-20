@@ -1,16 +1,16 @@
 using PlateTD.Entities.DTO;
 using PlateTD.Extensions;
-using PlateTD.SO;
 using UnityEngine;
 
 namespace PlateTD.Plates
 {
     public class PlateBehaviour : MonoBehaviour
     {
-        [SerializeField] protected PlateDTO _plateData;
         [SerializeField] protected GameObject _plateRenderer;
         [SerializeField] protected DamageZone _damageZone;
+        [SerializeField] private PlateInfoUI _plateInfoUI;
 
+        protected PlateDTO _plateData;
         protected IPlateAffector _plateAffector;
 
         private float _timer;
@@ -33,6 +33,7 @@ namespace PlateTD.Plates
                     _plateData = _plateData.NextLevelPlate;
                     UpdatePlate();
                 }
+                _plateInfoUI.SetUpgradedPlateText(_consumedPlates, _plateData.PlatesToLevelUp);
 
                 return true;
             }
@@ -43,6 +44,7 @@ namespace PlateTD.Plates
         public void SetPlateData(PlateDTO data)
         {
             _plateData = data;
+            _plateInfoUI.SetUpgradedPlateText(_consumedPlates, _plateData.PlatesToLevelUp);
         }
 
         public void UpdatePlate()
@@ -50,6 +52,13 @@ namespace PlateTD.Plates
             Destroy(_plateRenderer);
             _plateRenderer = Instantiate(_plateData.PlateRenderer, gameObject.transform);
             _plateAffector.SetData(_plateData.ToDamageDebuffData());
+            _plateInfoUI.SetUpgradedPlateText(_consumedPlates, _plateData.PlatesToLevelUp);
+        }
+
+        public void SellPlate()
+        {
+            GameEvents.InvokeAddGold(_plateData.SellCost);
+            Destroy(this.gameObject);
         }
 
         protected virtual void Awake()
@@ -62,8 +71,9 @@ namespace PlateTD.Plates
             if (_timer > 0)
             {
                 _timer -= Time.deltaTime;
+                _plateInfoUI.SetReloadImagePercentage(1 - (_timer / _plateData.ReloadSpeed));
             }
-            else if (_damageZone.IsEnemyExist())
+            else if (_damageZone.IsEnemyExist)
             {
                 foreach (var enemy in _damageZone.Enemies)
                 {
@@ -72,7 +82,5 @@ namespace PlateTD.Plates
                 _timer = _plateData.ReloadSpeed;
             }
         }
-
-
     }
 }

@@ -1,17 +1,21 @@
 using PlateTD.Enemies.Interfaces;
+using PlateTD.Entities;
 using PlateTD.SO;
 
-public class DebuffAffector : IPlateAffector
+namespace PlateTD.Plates.Affectors
 {
-    private DebuffSO _debuff;
-
-    public void AffectEnemy(IEnemy enemy)
+    public class DebuffAffector : IPlateAffector
     {
-        enemy.ConsumeDebuff(_debuff);
-    }
+        private DebuffSO _debuff;
 
-    public void SetData(object data)
-    {
-        _debuff = data as DebuffSO;
+        public void AffectEnemy(IEnemy enemy)
+        {
+            enemy.ConsumeDebuff(_debuff);
+        }
+
+        public void SetData(DamageDebuffData data)
+        {
+            _debuff = data.Debuff;
+        }
     }
 }

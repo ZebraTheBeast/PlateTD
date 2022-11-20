@@ -9,13 +9,13 @@ namespace PlateTD.Plates.Affectors
 
         public void AffectEnemy(IEnemy enemy)
         {
-            enemy.ConsumeDamage(_damageDebuffData.Damage);
+            enemy.ConsumeDamage(_damageDebuffData.Damage, _damageDebuffData.PlateType);
             enemy.ConsumeDebuff(_damageDebuffData.Debuff);
         }
 
-        public void SetData(object data)
+        public void SetData(DamageDebuffData data)
         {
-            _damageDebuffData = data as DamageDebuffData;
+            _damageDebuffData = data;
         }
     }
 }

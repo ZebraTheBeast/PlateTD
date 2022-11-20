@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Fire Plate 1
   PlateType: 1
-  Damage: 10
+  Damage: 30
   ReloadSpeed: 2
   Debuff: {fileID: 11400000, guid: 14af09a09a0531a4ca9ea994698a97b5, type: 2}
   NextLevelPlate: {fileID: 11400000, guid: 36ea68820dd448e41bd1b855da0b9e64, type: 2}
@@ -22,3 +22,4 @@ MonoBehaviour:
   Prefab: {fileID: 8944849640878316271, guid: b17a38259ac02ea40b4588f0c208d17c, type: 3}
   Sprite: {fileID: 21300000, guid: 92ac1a05375f29e4b801d06fddd6222b, type: 3}
   PlateRenderer: {fileID: 1200792238691444964, guid: d8f0089434b43e841aaa9b32f06467a1, type: 3}
+  SellCost: 30

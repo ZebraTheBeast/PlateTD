@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24eaeb6705ea1b24780a68cc855be6fa, type: 3}
+  m_Name: SpikePlate 2
+  m_EditorClassIdentifier: 
+  Name: Spike Plate 2
+  PlateType: 4
+  Damage: 50
+  ReloadSpeed: 1.5
+  Debuff: {fileID: 0}
+  NextLevelPlate: {fileID: 0}
+  PlatesToLevelUp: 0
+  Prefab: {fileID: 1103188619108939772, guid: f0c8d6010b455a342aa88bc62a8ec9fe, type: 3}
+  Sprite: {fileID: 21300000, guid: 18eb3fc1da0026542bbeb05b3bfd4876, type: 3}
+  PlateRenderer: {fileID: 1200792238691444964, guid: ae5e744866ccf0d4ba0f022a8d700c28, type: 3}
+  SellCost: 100

@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PlateTD.Enemies.Interfaces;
-using PlateTD.EnemyRepository.Interfaces;
-using PlateTD.Entities.DTO;
 using PlateTD.Entities.Enums;
+using PlateTD.Repositories.Interfaces;
 using PlateTD.SO;
-using UnityEngine;
 
-namespace PlateTD.EnemyRepository
+namespace PlateTD.Repositories
 {
     public class EnemyRepository : IEnemyRepository
     {

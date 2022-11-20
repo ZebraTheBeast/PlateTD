@@ -1,13 +1,15 @@
-using System.Linq;
 using PlateTD.Building;
-using PlateTD.EnemyRepository;
-using PlateTD.EnemyRepository.Interfaces;
+using PlateTD.Repositories;
+using PlateTD.Repositories.Interfaces;
 using PlateTD.Entities.Enums;
 using PlateTD.Extensions;
 using PlateTD.Inventory;
 using PlateTD.Shop;
 using PlateTD.SO;
 using UnityEngine;
+using PlateTD.LevelHealth;
+using PlateTD.Waves;
+using PlateTD.EndLevelService;
 
 public class LevelManager : MonoBehaviour
 {
@@ -17,18 +19,21 @@ public class LevelManager : MonoBehaviour
 
     private ShopService _shopService;
     private InventoryService _inventoryService;
+    private LevelHealthService _levelHealthService;
+    private EndLevelService _endLevelService;
 
+    [SerializeField] private int _levelHeatlh = 3;
     [SerializeField] private ShopConfig _shopConfig;
     [SerializeField] private InventoryConfig _inventoryConfig;
     [SerializeField] private WaveConfig _waveConfig;
     [SerializeField] private PlateDataConfig _plateDataConfig;
     [SerializeField] private EnemyConfig _enemyConfig;
 
+    [SerializeField] private EndLevelView _endLevelView;
+
     private void StartDragHandler(Vector2 screenPosition, PlateType plateType)
     {
-        var plateRenderer = GetPlateSoByType(plateType).PlateRenderer;
-
-        _buildingService.CreateGhost(plateRenderer, screenPosition);
+        _buildingService.CreateGhost(plateType, screenPosition);
     }
 
     private void EndDragHandler(Vector2 screenPosition, PlateType plateType)
@@ -42,8 +47,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            var plateSO = GetPlateSoByType(plateType);
-            bool result = _buildingService.BuildPlate(screenPosition, plateType, plateSO.ToPlateBuildingDTO());
+            bool result = _buildingService.BuildPlate(screenPosition, plateType);
 
             if (result)
             {
@@ -75,33 +79,70 @@ public class LevelManager : MonoBehaviour
         ServiceLocator.RegisterService<InventoryService>(_inventoryService);
     }
 
-    private void PrepareWaveService()
+    private void PrepareEnemyRepository()
     {
         IEnemyRepository enemyRepository = new EnemyRepository(_enemyConfig.EnemySOList);
-        _waveService.Init(_waveConfig, enemyRepository);
-    }
-
-    private PlateSO GetPlateSoByType(PlateType type)
-    {
-        return _plateDataConfig.PlateSOList.FirstOrDefault(item => item.PlateType == type);
+        ServiceLocator.RegisterService<IEnemyRepository>(enemyRepository);
     }
 
     private void StartWaveHandler()
     {
-        _waveService.TrySetNextWave();
-        _waveService.StartWave();
+        if (_waveService.TrySetNextWave())
+        {
+            _waveService.StartWave();
+        }
+    }
+
+    private void EndWaveHandler(bool isLastWave)
+    {
+        if (isLastWave && _levelHealthService.IsAlive)
+        {
+            _endLevelService.ShowWinView();
+        }
+    }
+
+    private void HealthEndHandler()
+    {
+        _endLevelService.ShowLostView();
+    }
+
+    private void PreparePlateRepository()
+    {
+        var plateRepository = new PlateRepository(_plateDataConfig.PlateSOList);
+        ServiceLocator.RegisterService<IPlateRepository>(plateRepository);
+    }
+
+    private void PrepareLevelHealthService()
+    {
+        _levelHealthService = new LevelHealthService();
+        ServiceLocator.RegisterService<LevelHealthService>(_levelHealthService);
+        _levelHealthService.OnHealthEnd += HealthEndHandler;
+    }
+
+    private void PrepareEndLevelService()
+    {
+        _endLevelService = new EndLevelService(_endLevelView);
+    }
+
+    private void InitServices()
+    {
+        _waveService.Init(_waveConfig);
+        _dragAndDropInventoryService.Init(_inventoryConfig);
+        _levelHealthService.SetHealth(_levelHeatlh);
     }
 
     private void Awake()
     {
         PrepareShopService();
         PrepareInventoryService();
-        PrepareWaveService();
+        PrepareEnemyRepository();
+        PreparePlateRepository();
+        PrepareLevelHealthService();
+        PrepareEndLevelService();
     }
 
     private void Start()
     {
-        _dragAndDropInventoryService.Init(_plateDataConfig.ToPlateInventoryViewDTO(_inventoryConfig));
         _dragAndDropInventoryService.OnEndDragPanel += EndDragHandler;
         _dragAndDropInventoryService.OnStartDragPanel += StartDragHandler;
 
@@ -109,6 +150,9 @@ public class LevelManager : MonoBehaviour
 
         GameEvents.OnAddGold += AddGoldHandler;
         GameEvents.OnStartWave += StartWaveHandler;
+        GameEvents.OnEndWave += EndWaveHandler;
+
+        InitServices();
     }
 
     private void Update()
@@ -123,13 +167,17 @@ public class LevelManager : MonoBehaviour
     {
         _dragAndDropInventoryService.OnEndDragPanel -= EndDragHandler;
         _dragAndDropInventoryService.OnStartDragPanel -= StartDragHandler;
-
         _shopService.OnPlateBuy -= PlateBuyHandler;
+        _levelHealthService.OnHealthEnd += HealthEndHandler;
 
         ServiceLocator.RemoveService<ShopService>();
         ServiceLocator.RemoveService<InventoryService>();
+        ServiceLocator.RemoveService<IEnemyRepository>();
+        ServiceLocator.RemoveService<IPlateRepository>();
+        ServiceLocator.RemoveService<LevelHealthService>();
 
         GameEvents.OnAddGold -= AddGoldHandler;
         GameEvents.OnStartWave -= StartWaveHandler;
+        GameEvents.OnEndWave -= EndWaveHandler;
     }
 }

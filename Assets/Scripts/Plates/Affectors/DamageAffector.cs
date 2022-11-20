@@ -1,19 +1,23 @@
 using PlateTD.Enemies.Interfaces;
+using PlateTD.Entities;
+using PlateTD.Entities.Enums;
 
-public class DamageAffector : IPlateAffector
+namespace PlateTD.Plates.Affectors
 {
-    private float _damage;
-
-    public void AffectEnemy(IEnemy enemy)
+    public class DamageAffector : IPlateAffector
     {
-        enemy.ConsumeDamage(_damage);
-    }
+        private float _damage;
+        private PlateType _plateType;
 
-    public void SetData(object data)
-    {
-        if(data is float)
+        public void AffectEnemy(IEnemy enemy)
         {
-            _damage = (float)data;
+            enemy.ConsumeDamage(_damage, _plateType);
+        }
+
+        public void SetData(DamageDebuffData data)
+        {
+            _damage = data.Damage;
+            _plateType = data.PlateType;
         }
     }
 }

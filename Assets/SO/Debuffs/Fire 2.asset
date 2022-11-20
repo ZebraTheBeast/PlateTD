@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Fire 2
   m_EditorClassIdentifier: 
   Type: 1
-  Damage: 5
+  Level: 2
+  Damage: 15
   Time: 3
+  Speed: 0

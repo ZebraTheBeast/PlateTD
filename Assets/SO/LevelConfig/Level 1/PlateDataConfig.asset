@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlateSOList:
   - {fileID: 11400000, guid: 607f1f8301c23794d846d264047011d5, type: 2}
+  - {fileID: 11400000, guid: ad41757be0a6df240a7a0d1eb16377f5, type: 2}
+  - {fileID: 11400000, guid: 34676ddf2107071449e1787aa6cd9a82, type: 2}
+  - {fileID: 11400000, guid: 3a48a43992730674f924f6809dd0cc7e, type: 2}
+  - {fileID: 11400000, guid: 763e91c055d69e04ebfcda6dc49236e2, type: 2}

@@ -1,3 +1,4 @@
+using PlateTD.Entities.Enums;
 using PlateTD.SO;
 
 namespace PlateTD.Entities
@@ -6,5 +7,6 @@ namespace PlateTD.Entities
     {
         public DebuffSO Debuff { get; set; }
         public float Damage { get; set; }
-    }
+        public PlateType PlateType {get;set;}
+}
 }

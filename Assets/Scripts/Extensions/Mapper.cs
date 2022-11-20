@@ -13,7 +13,8 @@ namespace PlateTD.Extensions
             return new DamageDebuffData
             {
                 Damage = plateData.Damage,
-                Debuff = plateData.Debuff
+                Debuff = plateData.Debuff,
+                PlateType = plateData.PlateType
             };
         }
 
@@ -51,19 +52,24 @@ namespace PlateTD.Extensions
             return new PlateDTO
             {
                 Damage = plateSO.Damage,
+                PlateType = plateSO.PlateType,
                 ReloadSpeed = plateSO.ReloadSpeed,
                 Debuff = plateSO.Debuff,
                 NextLevelPlate = plateSO.NextLevelPlate?.ToPlateDTO(),
                 PlatesToLevelUp = plateSO.PlatesToLevelUp,
                 PlateRenderer = plateSO.PlateRenderer,
+                SellCost = plateSO.SellCost,
             };
         }
 
-        public static EnemyDTO ToEnemyDTO(this EnemySO enemySO)
+        public static DebuffDTO ToDebuffDTO(this DebuffSO debuffSO)
         {
-            return new EnemyDTO
+            return new DebuffDTO
             {
-                
+                Damage = debuffSO.Damage,
+                Speed = debuffSO.Speed,
+                Time = debuffSO.Time,
+                DebuffLevel = debuffSO.Level
             };
         }
     }

@@ -16,10 +16,72 @@ MonoBehaviour:
   - Enemies:
     - Type: 1
       Path: {fileID: 408104160713992508, guid: 47935fc069f2f39438767c271c010089, type: 3}
-      Delay: 1
+      Delay: 0
+    - Type: 1
+      Path: {fileID: 6754931109158823243, guid: 7a7e84e6530653e439f7d26638c92635, type: 3}
+      Delay: 2
+    - Type: 1
+      Path: {fileID: 3760422566476340760, guid: 8a926dcd1e0e4164786b2997868a2919, type: 3}
+      Delay: 4
+  - Enemies:
     - Type: 1
       Path: {fileID: 408104160713992508, guid: 47935fc069f2f39438767c271c010089, type: 3}
-      Delay: 2
+      Delay: 0
+    - Type: 1
+      Path: {fileID: 6754931109158823243, guid: 7a7e84e6530653e439f7d26638c92635, type: 3}
+      Delay: 0
+    - Type: 1
+      Path: {fileID: 3760422566476340760, guid: 8a926dcd1e0e4164786b2997868a2919, type: 3}
+      Delay: 0
     - Type: 1
       Path: {fileID: 408104160713992508, guid: 47935fc069f2f39438767c271c010089, type: 3}
       Delay: 3
+    - Type: 1
+      Path: {fileID: 6754931109158823243, guid: 7a7e84e6530653e439f7d26638c92635, type: 3}
+      Delay: 3
+    - Type: 1
+      Path: {fileID: 3760422566476340760, guid: 8a926dcd1e0e4164786b2997868a2919, type: 3}
+      Delay: 3
+  - Enemies:
+    - Type: 1
+      Path: {fileID: 408104160713992508, guid: 47935fc069f2f39438767c271c010089, type: 3}
+      Delay: 0
+    - Type: 1
+      Path: {fileID: 6754931109158823243, guid: 7a7e84e6530653e439f7d26638c92635, type: 3}
+      Delay: 1
+    - Type: 1
+      Path: {fileID: 3760422566476340760, guid: 8a926dcd1e0e4164786b2997868a2919, type: 3}
+      Delay: 2
+    - Type: 1
+      Path: {fileID: 6754931109158823243, guid: 7a7e84e6530653e439f7d26638c92635, type: 3}
+      Delay: 3
+    - Type: 1
+      Path: {fileID: 408104160713992508, guid: 47935fc069f2f39438767c271c010089, type: 3}
+      Delay: 4
+    - Type: 1
+      Path: {fileID: 6754931109158823243, guid: 7a7e84e6530653e439f7d26638c92635, type: 3}
+      Delay: 5
+    - Type: 1
+      Path: {fileID: 3760422566476340760, guid: 8a926dcd1e0e4164786b2997868a2919, type: 3}
+      Delay: 6
+    - Type: 1
+      Path: {fileID: 6754931109158823243, guid: 7a7e84e6530653e439f7d26638c92635, type: 3}
+      Delay: 7
+    - Type: 1
+      Path: {fileID: 408104160713992508, guid: 47935fc069f2f39438767c271c010089, type: 3}
+      Delay: 8
+    - Type: 1
+      Path: {fileID: 6754931109158823243, guid: 7a7e84e6530653e439f7d26638c92635, type: 3}
+      Delay: 9
+    - Type: 1
+      Path: {fileID: 408104160713992508, guid: 47935fc069f2f39438767c271c010089, type: 3}
+      Delay: 10
+    - Type: 1
+      Path: {fileID: 3760422566476340760, guid: 8a926dcd1e0e4164786b2997868a2919, type: 3}
+      Delay: 11
+    - Type: 1
+      Path: {fileID: 6754931109158823243, guid: 7a7e84e6530653e439f7d26638c92635, type: 3}
+      Delay: 11
+    - Type: 1
+      Path: {fileID: 3760422566476340760, guid: 8a926dcd1e0e4164786b2997868a2919, type: 3}
+      Delay: 11

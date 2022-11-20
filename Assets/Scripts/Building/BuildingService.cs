@@ -3,7 +3,8 @@ using PlateTD.Utilities.Grid;
 using PlateTD.Entities;
 using PlateTD.Utilities;
 using PlateTD.Entities.Enums;
-using PlateTD.Entities.DTO;
+using PlateTD.Repositories.Interfaces;
+using PlateTD.Extensions;
 
 namespace PlateTD.Building
 {
@@ -22,11 +23,16 @@ namespace PlateTD.Building
         [SerializeField] private float _ghostOffsetCamera = 5f;
         [SerializeField] private Vector3 _ghostOffsetPlate = new Vector3(0, 0, -0.5f);
 
-
         [SerializeField] private BuildingController _plateBuidlingController;
         private BuildingGhostController _buildingGhostController;
 
         private GridSystem<PlacedPlateData> _gridSystem;
+
+        private IPlateRepository _plateRepository;
+
+        private PlateType _ghostPlateType;
+
+        [SerializeField] private SellPlateView _sellPlateView;
 
         public bool IsPlateExist(Vector2 screenPosition)
         {
@@ -58,7 +64,7 @@ namespace PlateTD.Building
             return false;
         }
 
-        public bool BuildPlate(Vector2 screenPosition, PlateType plateType, PlateBuildingDTO plateBuildingData)
+        public bool BuildPlate(Vector2 screenPosition, PlateType plateType)
         {
             if (Mouse3D.TryGetPosition(screenPosition, _fieldLayerMask, out Vector3 position))
             {
@@ -67,6 +73,7 @@ namespace PlateTD.Building
 
                 if (placedPlateData == null)
                 {
+                    var plateBuildingData = _plateRepository.GetPlateBuildingDTOByPlateType(plateType);
                     var plateBehaviour = Instantiate(plateBuildingData.Prefab, _gridSystem.GetCenteredWorldPosition(x, y), Quaternion.identity);
                     plateBehaviour.SetPlateData(plateBuildingData.PlateData);
                     plateBehaviour.UpdatePlate();
@@ -79,8 +86,11 @@ namespace PlateTD.Building
             return false;
         }
 
-        public void CreateGhost(GameObject plateAppearance, Vector2 screenPosition)
+        public void CreateGhost(PlateType plateType, Vector2 screenPosition)
         {
+            var plateAppearance = _plateRepository.GetPlateAppearanceByPlateType(plateType);
+            _ghostPlateType = plateType;
+
             _buildingGhostController.CreateGhost(plateAppearance, screenPosition);
         }
 
@@ -97,7 +107,9 @@ namespace PlateTD.Building
                     PlacedPlateData placedPlateData = _gridSystem.GetValue(x, y);
                     ghostPosition = _gridSystem.GetCenteredWorldPosition(x, y) + _ghostOffsetPlate;
 
-                    if(placedPlateData == null || placedPlateData.PlateBehaviour.IsUpgradable())
+                    if (placedPlateData == null ||
+                        (placedPlateData.Type == _ghostPlateType &&
+                        placedPlateData.PlateBehaviour.IsUpgradable()))
                     {
                         ghostCanBePlased = true;
                     }
@@ -116,12 +128,29 @@ namespace PlateTD.Building
         {
             _gridSystem.GetXY(clickPoint, out int x, out int y);
             var position = _gridSystem.GetCenteredWorldPosition(x, y);
-            if (!_gridSystem.IsOccupied(x, y))
+            if (_gridSystem.IsOccupied(x, y))
             {
-                Debug.Log($"{x} - {y}");
-                // Instantiate(_plateData.Prefab, position, Quaternion.identity);
-                // _gridSystem.SetValue(x, y, 1);
+                position = Camera.main.WorldToScreenPoint(position);
+                _sellPlateView.ShowAt(position);
+                _sellPlateView.SetSellButtonCallback(() => SellPlate(x, y));
             }
+            else
+            {
+                _sellPlateView.Hide();
+            }
+        }
+
+        private void SellPlate(int x, int y)
+        {
+            var placedPlateData = _gridSystem.GetValue(x, y);
+            placedPlateData.PlateBehaviour.SellPlate();
+            _gridSystem.ResetValue(x, y);
+            _sellPlateView.Hide();
+        }
+
+        private void FieldMissClickHandler()
+        {
+            _sellPlateView.Hide();
         }
 
         private void Awake()
@@ -134,11 +163,15 @@ namespace PlateTD.Building
         {
             _plateBuidlingController.SetFieldLayerMask(_fieldLayerMask);
             _plateBuidlingController.OnFieldClick += FieldClickHandler;
+            _plateBuidlingController.OnFieldMissClick += FieldMissClickHandler;
+
+            _plateRepository = ServiceLocator.Resolve<IPlateRepository>();
         }
 
         private void OnDestroy()
         {
             _plateBuidlingController.OnFieldClick -= FieldClickHandler;
+            _plateBuidlingController.OnFieldMissClick -= FieldMissClickHandler;
         }
     }
 }

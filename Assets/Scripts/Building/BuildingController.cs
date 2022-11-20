@@ -10,6 +10,7 @@ namespace PlateTD.Building
         private LayerMask _fieldLayerMask;
 
         public event Action<Vector3> OnFieldClick;
+        public event Action OnFieldMissClick;
 
         public void SetFieldLayerMask(LayerMask layerMask)
         {
@@ -21,6 +22,10 @@ namespace PlateTD.Building
             if (Mouse3D.TryGetPosition(eventData.position, _fieldLayerMask, out Vector3 clickPosition))
             {
                 OnFieldClick?.Invoke(clickPosition);
+            }
+            else
+            {
+                OnFieldMissClick?.Invoke();
             }
         }
     }

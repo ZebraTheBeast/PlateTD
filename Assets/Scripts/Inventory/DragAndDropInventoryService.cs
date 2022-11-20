@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using PlateTD.Entities;
-using PlateTD.Entities.DTO;
 using PlateTD.Entities.Enums;
 using PlateTD.Extensions;
+using PlateTD.Repositories.Interfaces;
+using PlateTD.SO;
 using UnityEngine;
 
 namespace PlateTD.Inventory
@@ -18,6 +18,7 @@ namespace PlateTD.Inventory
         private PlateType _selectedPlateType;
 
         private InventoryService _inventoryService;
+        private IPlateRepository _plateRepository;
 
         public event Action<Vector2, PlateType> OnStartDragPanel;
         public event Action<Vector2, PlateType> OnEndDragPanel;
@@ -25,17 +26,20 @@ namespace PlateTD.Inventory
         public bool IsDragged { get; private set; }
         public Vector2 DragPosition { get; private set; }
 
-        public void Init(List<PlateInventoryViewDTO> plateInventoryDatas)
+        public void Init(InventoryConfig inventoryConfig)
         {
+            ResolvePlateRepository();
             IsDragged = false;
             _platePanels = new Dictionary<PlateType, InventoryPlatePanel>();
 
-            foreach (var plateData in plateInventoryDatas)
+            foreach (var plateData in inventoryConfig.StartPlates)
             {
+                var sprite = _plateRepository.GetPlateSpriteByType(plateData.Type);
+
                 var platePanel = Instantiate(_platePanelPrefab, _inventoryListTransform);
                 platePanel.SetPlatePanel(
                     plateData.Amount,
-                    plateData.Sprite,
+                    sprite,
                     (point) => BeginDragHandler(point, plateData.Type),
                     (point) => EndDragHandler(point),
                     (point) => DragHandler(point));
@@ -78,6 +82,14 @@ namespace PlateTD.Inventory
             if (_platePanels.ContainsKey(plateType))
             {
                 _platePanels[plateType].SetAmount(amount);
+            }
+        }
+
+        private void ResolvePlateRepository()
+        {
+            if (_plateRepository == null)
+            {
+                _plateRepository = ServiceLocator.Resolve<IPlateRepository>();
             }
         }
 

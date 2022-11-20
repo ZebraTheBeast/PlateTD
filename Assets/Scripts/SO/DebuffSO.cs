@@ -7,7 +7,9 @@ namespace PlateTD.SO
     public class DebuffSO : ScriptableObject
     {
         public DebuffType Type;
+        public int Level;
         public float Damage;
         public float Time;
+        public float Speed;
     }
 }

@@ -14,4 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartPlates:
   - Type: 1
-    Amount: 1
+    Amount: 3
+  - Type: 2
+    Amount: 3
+  - Type: 3
+    Amount: 3
+  - Type: 4
+    Amount: 3
+  - Type: 5
+    Amount: 3

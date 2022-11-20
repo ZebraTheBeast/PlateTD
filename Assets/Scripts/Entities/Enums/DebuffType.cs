@@ -6,8 +6,6 @@ namespace PlateTD.Entities.Enums
         InFire = 1,
         InWater = 2,
         Shocked = 3,
-        Cold = 4,
-        Freeze = 5,
-        Bleeding = 6
+        Cold = 4
     }
 }

@@ -17,5 +17,6 @@ namespace PlateTD.SO
         public PlateBehaviour Prefab;
         public Sprite Sprite;
         public GameObject PlateRenderer;
+        public int SellCost;
     }
 }

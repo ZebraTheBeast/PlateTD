@@ -1,7 +1,7 @@
 using PlateTD.Enemies.Interfaces;
 using PlateTD.Entities.Enums;
 
-namespace PlateTD.EnemyRepository.Interfaces
+namespace PlateTD.Repositories.Interfaces
 {
     public interface IEnemyRepository
     {
